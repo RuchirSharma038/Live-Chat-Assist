@@ -109,7 +109,7 @@ Completion:`;
             const messageBox = document.querySelector('footer div[contenteditable="true"][data-tab="10"]');
 
             if (messageBox) {
-                // 2. Focus the input field. This is often a necessary step.
+               
                 messageBox.focus();
                 const event = new InputEvent('input', {
                     bubbles: true,
@@ -123,7 +123,7 @@ Completion:`;
                 console.error("Message box not found.");
             }
             activeElem = document.activeElement;
-            //return true;
+           
             console.log('Tab detected');
         }
     }
@@ -139,17 +139,16 @@ Completion:`;
 
     const processChange = debounce(main, 3000);
 
-    // The function to run when the user types
+    
     function inputListener(event) {
-        // .textContent is slightly more efficient than .innerText
+       
         const text = event.target.textContent;
         console.log("Input detected:", text);
         processChange(text);
 
     }
 
-    // A function to find the message box and attach the listener.
-    // This will be called by the observer every time the page changes.
+    
     function setupListener() {
         const messageBox = document.querySelector('footer div[contenteditable="true"][data-tab="10"]');
 
@@ -162,7 +161,7 @@ Completion:`;
         }
     }
 
-    // This function finds the main #app and starts the observer
+    
     function observeWhatsAppApp() {
         const target = document.querySelector('#app');
         if (!target) {
@@ -171,18 +170,17 @@ Completion:`;
             return;
         }
 
-        // The observer's job is to call setupListener whenever the page structure changes.
-        // It should NOT disconnect.
+        
         const observer = new MutationObserver(setupListener);
         observer.observe(target, { childList: true, subtree: true });
 
         console.log("MutationObserver is active and will remain active.");
 
-        // Attempt to attach the listener immediately in case the element is already present.
+        
         setupListener();
     }
 
-    // Start the entire process
+    
     observeWhatsAppApp();
 
 })();
