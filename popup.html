@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+ 
+<head>
+  <link href="popup.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+  <div class="container">
+    <div class="title">Writing Assistant Settings </div>
+    
+
+
+    <div class="setting">
+      <label for="api-key-input">Your API Key:</label>
+      <input type="password" id="api-key-input" placeholder="Paste your API key here">
+      <button id="save-key-btn">Save Key</button>
+    </div>
+
+    <div class="message">
+      To setup your API key login to open Router, go to keys and create a key. 
+      Paste the key here!
+    </div>
+    
+
+    
+
+    <div class="setting">
+      <label for="tone-select">Message Tone:</label>
+      <select id="tone-select">
+        <option value="formal">Formal</option>
+        <option value="casual">Casual</option>
+        <option value="friendly">Friendly</option>
+      </select>
+    </div>
+
+    <p id="status-message"></p>
+
+  </div>
+  <script type="module" src="popup.js"></script>
+</body>
+</html>
