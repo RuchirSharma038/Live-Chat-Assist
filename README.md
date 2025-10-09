@@ -17,6 +17,8 @@ Secure & Private: Uses the "Bring Your Own Key" (BYOK) model. Your API key is st
 
 Optimized for Performance: Uses debouncing and caching to minimize API calls, ensuring a smooth experience and staying within free-tier rate limits.
 
+
+
 🛠️ Technology Stack
 Platform: Google Chrome Extension (Manifest V3)
 
@@ -31,6 +33,8 @@ MutationObserver for reliably detecting dynamic DOM elements.
 Styling: CSS3
 
 AI Service: Third-party generative AI models via OpenRouter
+
+
 
 🚀 Installation & Setup
 This extension is not yet on the Chrome Web Store, so you will need to load it manually in Developer Mode.
@@ -48,6 +52,7 @@ Select the project folder you downloaded in Step 1.
 
 The AI Writing Assistant should now appear in your list of extensions. Pin it to your toolbar for easy access.
 
+
 Part 2: Setting Up Your API Key
 The extension requires you to provide your own free API key from a provider like OpenRouter.
 
@@ -62,6 +67,8 @@ Return to Chrome and click on the AI Writing Assistant icon in your toolbar to o
 Paste your copied API key into the input box and click "Save".
 
 The extension is now ready to use!
+
+
 
 ✍️ How to Use
 Open whatsapp web and navigate to any chat.
