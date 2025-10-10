@@ -10,12 +10,14 @@
         if (!messageBox || !suggestionText) {
             return;
         }
+        const userText = messageBox.innerText;
         const parent = messageBox.parentElement;
+        const overlayId = 'ghost-text-overlay';
         parent.style.position = 'relative';
-        let overlay = document.querySelector('#ghost-overlay');
+        let overlay = document.querySelector(`#${overlayId}`);
         if (!overlay) {
             overlay = document.createElement('div');
-            overlay.id = 'ghost-suggestion';
+            overlay.id = overlayId;
             overlay.style.position = 'absolute';
             overlay.style.top = '0';
             overlay.style.left = '0';
@@ -34,8 +36,20 @@
         overlay.style.width = style.width;
         overlay.style.height = style.height;
 
-        overlay.textContent = suggestionText;
+        const hiddenTextSpan = `<span class="hidden-text">${userText.replace(/\s/g, '&nbsp;')}</span>`;
 
+
+        const suggestionSpan = `<span class="suggestion-text">${suggestionText}</span>`;
+
+
+        overlay.innerHTML = hiddenTextSpan+ suggestionSpan;
+
+    }
+    function hideSuggestion() {
+        const overlay = document.querySelector('#ghost-text-overlay');
+        if (overlay) {
+            overlay.remove();
+        }
     }
     async function main(text) {
 
@@ -57,7 +71,7 @@
                 return;
 
             }
-            //loadContent();
+
             if (!tone) {
                 tone = "Casual";
             }
@@ -76,20 +90,24 @@ User's text: "${text}"
 Completion:`;
 
 
-            const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+            const response = await fetch(`https://generativelanguage.googleapis.com/v1/models/gemini-2.0-flash:generateContent?key=${apiKey}`, {
                 method: "POST",
                 headers: {
-                    "Authorization": `Bearer ${apiKey}`,
+                    
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    model: "google/gemini-2.0-flash-exp:free",
-                    messages: [{ role: "user", content: prompt }]
+                    contents: [{
+                        role: 'user',
+                        parts: [{
+                            text: prompt
+                        }]
+                    }]
                 })
             });
 
             const data = await response.json();
-            const suggestion = data.choices?.[0]?.message?.content
+            const suggestion = data.candidates?.[0]?.content?.parts?.[0]?.text;
             console.log(suggestion);
 
             showSuggestion(suggestion);
@@ -99,17 +117,21 @@ Completion:`;
             console.error(error);
         }
     }
-    //document.addEventListener('keyup', detectTabKey);
+
 
     function detectTabKey(event) {
-        const suggestion = document.querySelector('#ghost-suggestion');
-        if (event.key === 'Tab' && suggestion) {
+        const suggestion = document.querySelector('#ghost-text-overlay');
+        const suggestionSpan = suggestion?.querySelector('.suggestion-text');
+        if (event.key === 'Tab' && suggestionSpan) {
+            console.log('Hii');
+            event.preventDefault(); 
 
-            const suggestionText = suggestion.textContent;
+            const suggestionText = suggestionSpan.textContent;
+            hideSuggestion();
             const messageBox = document.querySelector('footer div[contenteditable="true"][data-tab="10"]');
-
+             
             if (messageBox) {
-               
+
                 messageBox.focus();
                 const event = new InputEvent('input', {
                     bubbles: true,
@@ -117,13 +139,13 @@ Completion:`;
                     inputType: 'insertText',
                     data: ' ' + suggestionText
                 });
-                document.execCommand('insertText', false, ' ' + suggestionText); // fallback
-                messageBox.dispatchEvent(event);
+                document.execCommand('insertText', false, ' ' + suggestionText); 
+               
             } else {
                 console.error("Message box not found.");
             }
             activeElem = document.activeElement;
-           
+
             console.log('Tab detected');
         }
     }
@@ -137,18 +159,21 @@ Completion:`;
         };
     }
 
-    const processChange = debounce(main, 3000);
+    const processChange = debounce(main, 2000);
 
-    
+
     function inputListener(event) {
-       
+        const suggestion = document.querySelector('.ghost-text-overlay');
+        if(suggestion){
+        suggestion.remove();
+        }
         const text = event.target.textContent;
         console.log("Input detected:", text);
         processChange(text);
 
     }
 
-    
+
     function setupListener() {
         const messageBox = document.querySelector('footer div[contenteditable="true"][data-tab="10"]');
 
@@ -161,7 +186,7 @@ Completion:`;
         }
     }
 
-    
+
     function observeWhatsAppApp() {
         const target = document.querySelector('#app');
         if (!target) {
@@ -170,17 +195,17 @@ Completion:`;
             return;
         }
 
-        
+
         const observer = new MutationObserver(setupListener);
         observer.observe(target, { childList: true, subtree: true });
 
         console.log("MutationObserver is active and will remain active.");
 
-        
+
         setupListener();
     }
 
-    
+
     observeWhatsAppApp();
 
 })();
