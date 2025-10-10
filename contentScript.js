@@ -133,13 +133,9 @@ Completion:`;
             if (messageBox) {
 
                 messageBox.focus();
-                const event = new InputEvent('input', {
-                    bubbles: true,
-                    cancelable: true,
-                    inputType: 'insertText',
-                    data: ' ' + suggestionText
-                });
-                document.execCommand('insertText', false, ' ' + suggestionText); 
+                
+                document.execCommand('insertText', false, ' ' + suggestionText);
+                hideSuggestion(); 
                
             } else {
                 console.error("Message box not found.");
