@@ -32,7 +32,7 @@ MutationObserver for reliably detecting dynamic DOM elements.
 
 Styling: CSS3
 
-AI Service: Third-party generative AI models via OpenRouter
+AI Service: Third-party generative AI models via Google Gemini API (gemini-2.0-flash)
 
 
 
@@ -54,9 +54,9 @@ The AI Writing Assistant should now appear in your list of extensions. Pin it to
 
 
 Part 2: Setting Up Your API Key
-The extension requires you to provide your own free API key from a provider like OpenRouter.
+The extension requires you to provide your own Google Gemini API key.
 
-Go to OpenRouter.ai and sign in or create a new account.
+Go to Google AI Studio and generate an API key.
 
 Navigate to your account Keys page.
 
